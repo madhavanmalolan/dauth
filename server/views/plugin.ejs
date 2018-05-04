@@ -14,7 +14,7 @@
 
     <body style="margin:0;padding:0" >
 	<div id="template" hidden>
-	<a href="https://dauth.co/utils/login?redirect=VERIFIER_URL" style="background-color:#007bff; border-color:#007bff;color:#fff;cursor:pointer;line-height:3rem; font-size:1.5rem; border-radius:0.3rem;display:inline-block;text-decoration:none; border:1px solid transparent;padding-left:16px;padding-right:16px;font-family:Roboto " >Login with Dauth</a>
+	<a href="https://dauth.co/utils/login?redirect=VERIFIER_URL" style="background-color:#007bff; border-color:#007bff;color:#fff;cursor:pointer;line-height:3rem; font-size:1.5rem; border-radius:0.3rem;display:inline-block;text-decoration:none; border:1px solid transparent;padding-left:16px;padding-right:16px;" >Login with Dauth</a>
 	</div>
 
         <img style="position:fixed;width:100%;height:100%;object-fit: cover" src="/images/bg.jpg"/>
@@ -24,35 +24,11 @@
 	    <h5 class="card-title">Integrate login in 60 seconds </h5>
 	          Just as easy to integrate as other social logins, but more secure. <br /><br />
 		  <br /><br /> 
-
-	    <h5 class="card-title">Architecture</h5>
-	    DAuth is inspired by the simplicity of OAuth. 
-	    <br />
-	    Every user has a Dauth Login page and a DAuth Handler registered. The DAuth Login page is the only place where the user may input their password. The password is never transmitted over the wire. <br />
-	    The DAuth Login page generates a code and hashcode to uniquely identify the current request. These values are then passed to the Verifier URL<br />
-	    
-	    The verifier URL must encode a unique short string using the user's public key and pass the encrypted value to the DAuth Handler registered for that user. If the Handler decrypts the message using the user's private key and sends back the decrypted value. If the value that was encrypted is the same as the decrypted value, the login is to be considered successful. <br /><br /><br />
-
- 
-	    <h5 class="card-title">Verifier Callback : Node.js</h5>
-	    <b> Step 0 </b>
-	    <p> Parse username, code and hashcode from the query parameters </p>
-	    <br /><br />
-	    <b> Step 1 </b>
-	    <p> Get user's DAuth Handler and Public Key from dauth.co or any other server of your choice </p>
-	    <br /><br />
-	    <b> Step 2 </b>
-	    <p> Generate a short random token string</p>
-	    <br /><br />
-	    <b> Step 3 </b>
-	    <p> Send a POST request to the DAuth Handler with the following parameters : code, codehash, username, cipher </p>
-	    <p> The POST request will respond with the decipherd value using the user's private key </p>
-	    <br /><br />
-	    <b> Step 4 </b>
-	    <p> Redirect user appropriately, handle successful and failed logins </p>
-	    <br /><br />
-	    <script src="https://gist.github.com/madhavanmalolan/757e04c19ce85640f962bab3fc73c298.js"></script>
+            
+	    <h5 class="card-title">Server side integration</h5>
+	    Refer to the instructions <a target="_blank" href="https://github.com/madhavanmalolan/dauth#nodejs-example"> here </a><br /><br />
 	    <h5 class="card-title">HTML Plugin</h5>
+
 	    <p> You may paste this anywhere in your web page. This link will redirect the user to the appropriate DAuth Login page. </p>
 	    <div class="input-group mb-3">
 		  <input type="text" class="form-control" placeholder="Verifier URL" id="url" >
@@ -64,7 +40,7 @@
 	    <textarea style="width:100%; height: 100px" id="code"></textarea>
 	    <br /><br />
 	    <h5 class="card-title">Self hosted</h5>
-	    If you do not want to use dauth.co servers, you may host your own. <a href=""> Fork on GitHub </a>
+	    If you do not want to use dauth.co servers, you may host your own. <a href="https://github.com/madhavanmalolan/dauth"> Fork on GitHub </a>
 	  </div>
 	</div>
 	<script>
