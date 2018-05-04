@@ -28,7 +28,9 @@ router.get("/", function(req, res, next){
 		    return;
 		}
 		res.render('login_fail',{});
-	    });
+	    }).catch(function(error){
+		res.render('login_fail',{});
+	    });;
 	}).catch(function(error){
 		res.render('login_fail',{});
 	});
