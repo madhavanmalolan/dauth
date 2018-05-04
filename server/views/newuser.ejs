@@ -1,0 +1,143 @@
+<html>
+    <head>
+	<title> DAuth </title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="/javascripts/rollups/sha256.js"></script>
+
+    </head>
+
+
+    <body style="margin:0;padding:0" >
+        <img style="position:fixed;width:100%;height:100%;object-fit: cover" src="/images/bg.jpg"/>
+	<div class="card text-white bg-dark mb-3" style="width:90%; max-width:600px;height:90%; margin:auto; top: 5%;">
+	  <div class="card-header">DAuth</div>
+	  <div class="card-body">
+	    <h5 class="card-title">Register as new user</h5>
+	      <div id="form">
+		  <div class="form-group">
+		      <label for="username">Username</label>
+		      <input style="background:#303030;color:#eeeeee" class="form-control" id="username"  placeholder="Choose a username">
+		  </div>
+		  <div class="form-group">
+		      <label for="password1">Password</label>
+		      <input type="password" style="background:#303030;color:#eeeeee" class="form-control" id="password1"  placeholder="Choose a password">
+		  </div>
+		  <div class="form-group">
+		      <label for="password2">Confirm password</label>
+		      <input type="password" style="background:#303030;color:#eeeeee" class="form-control" id="password2"  placeholder="Re-enter the password">
+		  </div>
+	      </div>
+	      <div id="done">
+		  <h1> Registration complete! </h1>
+		  <p> Welcome to the decentralized future </p>
+		  <p> You can now login using this username </p>
+	      </div>
+		  <center>
+		      <button id="register" onClick="validate()" type="submit" class="btn btn-lg btn-outline-primary">Register</button>
+		      <span id="loading">  <i class="fa fa-circle-o-notch fa-spin"></i> Registering onchain! <a target="_blank" href="" id="status">Check status here </a>. This might take a few minutes.</span>
+		  </center>
+	  </div>
+	</div>
+	<script>
+            var contractAddress = "<%= contractAddress %>";
+	    var contractAbi = <%- JSON.stringify(abi) %>;
+            var publicKey = "";
+	    var dauthUrl = "";
+	    web3.setProvider(new web3.providers.HttpProvider("http://dauth.co:8545"));
+	    var contract = web3.eth.contract(contractAbi).at(contractAddress); 
+	    var registrationFlag = false;
+            $(document).ready(function(){
+		$.get("/users/keys/new").then(function(response){
+		    publicKey = response.pub;
+		    dauthUrl = response.url;
+		});
+		$("#loading").hide();
+		$("#done").hide();
+	    });
+            function validate(){
+		var username = $("#username").val();
+		var pass1 = $("#password1").val();
+		var pass2 = $("#password2").val();
+		var validUsername = /^[a-z0-9\.\_]+$/i.test( username );
+		var valid = true;
+		if( !validUsername ){
+		    toastr.error("Username can have only alpha numeric characters, . and _");
+		    valid = false;
+		}
+		if(pass1.length < 6){
+		    toastr.error("Password too weak. Must have atleast 6 characters");
+		    valid = false;
+		}
+		if(pass1 != pass2){
+                    toastr.error("Passwords don't match");
+		    valid = false;
+		}
+		if(publicKey == "" || dauthUrl == ""){
+		    valid = false;
+		    toastr.error("Not yet ready. Please try after a few seconds.");
+		}
+		if( typeof(web3) == "undefined"){
+		    toastr.error("Please install Metamask plugin or Mist");
+		    valid = false;
+		}
+		if( typeof(web3.eth.defaultAccount) == "undefined"){
+		    toastr.error("Please login into Metamask or Mist");
+		    valid = false;
+		}
+		if( !valid ){
+		    return;
+		}
+		$("#register").hide();
+		$("#loading").show();
+		registrationFlag = true;
+		var password = CryptoJS.SHA256(pass1).toString();
+		var setData = contract.set.getData(username, dauthUrl, publicKey);
+		console.log(setData);
+		web3.eth.estimateGas({to:contract.address, data:setData}, function(error, gasEstimate){
+		    console.log(gasEstimate);
+		    web3.eth.sendTransaction({to:contract.address, data:setData, gas : gasEstimate}, function(error, txHash){
+			if(typeof(txHash) == "undefined"){
+			    toastr.error("The registration was cancelled");
+		            $("#loading").hide();
+		            $("#register").show();
+		    	    return;
+			}
+			console.log(txHash);
+			$("#status").attr("href","https://rinkeby.etherscan.io/tx/"+txHash);
+			contract.NewUser().watch( (error, response) =>{
+			    if(response.args.success == false){
+				toastr.error("Username has already been taken on chain");
+				$("#loading").hide();
+				$("#register").show();
+				return;
+			    }
+
+			    if(registrationFlag){
+				registrationFlag = false;
+			    $.post("/users/",{publicKey : publicKey, username: username, password: password, url:dauthUrl}).then(function(response){
+				toastr.success("Registration successful!");
+				$("#loading").hide();
+				$("#done").show();
+				$("#form").hide();
+			    }).catch(function(error){
+				toastr.error("Something went wrong! Registration on chain succeeded, but failed on server. Your username is reserved, don't worry :)");
+				console.log(error);
+			    });
+			    }
+			    
+			});
+		    });
+		});
+	    }
+        </script> 
+
+    </body>
+
+
+</html>

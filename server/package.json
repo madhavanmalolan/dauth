@@ -1,0 +1,23 @@
+{
+  "name": "selfserve",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "cryptico": "^1.0.2",
+    "crypto": "^1.0.1",
+    "debug": "~2.6.9",
+    "ejs": "^2.5.9",
+    "express": "~4.15.5",
+    "jade": "~1.11.0",
+    "mongoose": "^5.0.17",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5",
+    "web3": "^0.20.1"
+  }
+}

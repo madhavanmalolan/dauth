@@ -1,0 +1,81 @@
+<html>
+    <head>
+	<title> DAuth </title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="/javascripts/rollups/md5.js"></script>
+    </head>
+
+
+    <body style="margin:0;padding:0" >
+	<div id="template" hidden>
+	<a href="https://dauth.co/utils/login?redirect=VERIFIER_URL" style="background-color:#007bff; border-color:#007bff;color:#fff;cursor:pointer;line-height:3rem; font-size:1.5rem; border-radius:0.3rem;display:inline-block;text-decoration:none; border:1px solid transparent;padding-left:16px;padding-right:16px;font-family:Roboto " >Login with Dauth</a>
+	</div>
+
+        <img style="position:fixed;width:100%;height:100%;object-fit: cover" src="/images/bg.jpg"/>
+	<div class="card text-white bg-dark mb-3" style="width:90%; max-width:600px; min-height:500px; margin:auto; top: 20px;">
+	  <div class="card-header">DAuth - Integrate</div>
+	  <div class="card-body">
+	    <h5 class="card-title">Integrate login in 60 seconds </h5>
+	          Just as easy to integrate as other social logins, but more secure. <br /><br />
+		  <br /><br /> 
+
+	    <h5 class="card-title">Architecture</h5>
+	    DAuth is inspired by the simplicity of OAuth. 
+	    <br />
+	    Every user has a Dauth Login page and a DAuth Handler registered. The DAuth Login page is the only place where the user may input their password. The password is never transmitted over the wire. <br />
+	    The DAuth Login page generates a code and hashcode to uniquely identify the current request. These values are then passed to the Verifier URL<br />
+	    
+	    The verifier URL must encode a unique short string using the user's public key and pass the encrypted value to the DAuth Handler registered for that user. If the Handler decrypts the message using the user's private key and sends back the decrypted value. If the value that was encrypted is the same as the decrypted value, the login is to be considered successful. <br /><br /><br />
+
+ 
+	    <h5 class="card-title">Verifier Callback : Node.js</h5>
+	    <b> Step 0 </b>
+	    <p> Parse username, code and hashcode from the query parameters </p>
+	    <br /><br />
+	    <b> Step 1 </b>
+	    <p> Get user's DAuth Handler and Public Key from dauth.co or any other server of your choice </p>
+	    <br /><br />
+	    <b> Step 2 </b>
+	    <p> Generate a short random token string</p>
+	    <br /><br />
+	    <b> Step 3 </b>
+	    <p> Send a POST request to the DAuth Handler with the following parameters : code, codehash, username, cipher </p>
+	    <p> The POST request will respond with the decipherd value using the user's private key </p>
+	    <br /><br />
+	    <b> Step 4 </b>
+	    <p> Redirect user appropriately, handle successful and failed logins </p>
+	    <br /><br />
+	    <script src="https://gist.github.com/madhavanmalolan/757e04c19ce85640f962bab3fc73c298.js"></script>
+	    <h5 class="card-title">HTML Plugin</h5>
+	    <p> You may paste this anywhere in your web page. This link will redirect the user to the appropriate DAuth Login page. </p>
+	    <div class="input-group mb-3">
+		  <input type="text" class="form-control" placeholder="Verifier URL" id="url" >
+		    <div class="input-group-append">
+		        <button onclick="generate()" class="btn btn-outline-secondary" type="button" id="generate">Generate Plugin</button>
+	            </div>
+	    </div>
+
+	    <textarea style="width:100%; height: 100px" id="code"></textarea>
+	    <br /><br />
+	    <h5 class="card-title">Self hosted</h5>
+	    If you do not want to use dauth.co servers, you may host your own. <a href=""> Fork on GitHub </a>
+	  </div>
+	</div>
+	<script>
+            function generate(){
+		var url = $("#url").val();
+		var template = $("#template").html();
+		var code = template.replace("VERIFIER_URL",$("#url").val());
+		$("#code").html(code);
+	    }
+	</script>
+    </body>
+
+
+</html>
