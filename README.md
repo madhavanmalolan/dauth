@@ -57,15 +57,15 @@ Generate the widget using [this link](https://dauth.co/plugin)
 ## Architecture
 
 ### Components
-** DAuth Server ** : Anybody can clone this repository and setup a DAuth server, one such server has been set up at `http://dauth.co`. The DAuth Server consists of a DAuth Login Page and a DAuth Handler.
-** DAuth Handler ** : The DAuth Handler takes handles the user's private keys on his/her behalf.
-** DAuth Login Page ** : The DAuth Login Page is where the user must enter the password. Once the username and password has been entered, a session code is generated and passed on to the __verifier endpoint__.
-** Verifier Endpoint ** : The verifier endpoint takes the sends a __challenge request__ to the DAuth Handler. The DAuth Handler will be able to pass the challenge only if it holds the user's private keys.
+- __DAuth Server__ : Anybody can clone this repository and setup a DAuth server, one such server has been set up at `http://dauth.co`. The DAuth Server consists of a DAuth Login Page and a DAuth Handler.
+- __DAuth Handler__ : The DAuth Handler takes handles the user's private keys on his/her behalf.
+- __DAuth Login Page__ : The DAuth Login Page is where the user must enter the password. Once the username and password has been entered, a session code is generated and passed on to the _verifier endpoint_.
+- __Verifier Endpoint__ : The verifier endpoint takes the sends a _challenge request_ to the DAuth Handler. The DAuth Handler will be able to pass the challenge only if it holds the user's private keys.
 
 ## Flow of control
 - A user can register on a DAuth server. This server may be either self hosted (recommended) or hosted by a trusted third party.
 - Upon registration, the user must sign a transaction to reserve a username and broadcast the public key on the Ethereum blockchain. The user also broadcasts the DAuth Server location onchain.
-- Any service wanting to authenticate a user against the claimed address, may create a __challenge__. A challenge is a random string encrypted with the user's public key available on the Ethereum blockchain. This challenge is sent to the DAuth Handler. The user shall be considered successfully logged in if the DAuth handler passes the challenge. A challenge is passed if the Handler is able to recover the random string which was encrypted as a part of the challenge, by using the user's private key.
+- Any service wanting to authenticate a user against the claimed address, may create a _challenge_. A challenge is a random string encrypted with the user's public key available on the Ethereum blockchain. This challenge is sent to the DAuth Handler. The user shall be considered successfully logged in if the DAuth handler passes the challenge. A challenge is passed if the Handler is able to recover the random string which was encrypted as a part of the challenge, by using the user's private key.
 
 ## Gotchas
 - The private and public key are different from the ones used for the Ethereum Transactions. The Ethers are thus always safe in this process.
