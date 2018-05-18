@@ -13,7 +13,7 @@ The endpoint must
 
 ### Node.js NPM package
 ```
-npm install node-dauth-verifier
+npm install dauth-verifier
 ```
 
 ```
