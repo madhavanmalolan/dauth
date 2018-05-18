@@ -15,6 +15,8 @@ router.get("/:id",function(req, res, next){
     var url = BASE_URL+"dauth/"+id;
     console.log("id");
     UserModel.User.findOne({username:username}, function(error, user){
+	console.log(error);
+	console.log(user);
 	if(error || !user){
 	    res.render('dauth',{username:undefined});
 	    return;

@@ -1,7 +1,7 @@
 # DAuth
 DAuth is a simple decentralized authentication system tied to identities on the Ethereum Blockchain.
 
-## Server side integration
+## Server side integration (Verifier URL)
 
 Your server should expose one endpoint on to which the users will send login requests. 
 The endpoint must 

@@ -9,6 +9,14 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="/javascripts/rollups/md5.js"></script>
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0&appId=1728797977162653&autoLogAppEvents=1';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
     </head>
 
 
@@ -20,24 +28,38 @@
 	      <div class="alert alert-dark" role="alert">
 		    This project is currently on the Rinkeby Testnet
 	      </div>
-	    <h5 class="card-title">Why DAuth?</h5>
-	    <ul>
-		<li> No transaction fees to login </li>
-		<li> Login with a username and password from any device. No need for your device to have MetaMask to login </li>
-		<li> Verify user's ethereum wallet address </li>
-		<li> User's data and Ethers are never compromised </li>
-		<li> Easy to integrate - just like any other social login</li>
-	    </ul>
-	    Try out the demo by logging in here :) <br /><br />
+	      
 		  <center>
-		      	<a href="https://dauth.co/utils/login?redirect=https://dauth.co/verifier/" style="background-color:#007bff; border-color:#007bff;color:#fff;cursor:pointer;line-height:3rem; font-size:1.5rem; border-radius:0.3rem;display:inline-block;text-decoration:none; border:1px solid transparent;padding-left:16px;padding-right:16px;">Login with Dauth</a>
+		      Use this <br /><br />
+		      	<a href="https://dauth.co/utils/login?redirect=https://dauth.co/verifier/" style="background-color:#007bff; border-color:#007bff;color:#fff;cursor:pointer;line-height:3rem; font-size:1.5rem; border-radius:0.3rem;display:inline-block;text-decoration:none; border:1px solid transparent;padding-left:16px;padding-right:16px;" target="_blank">Login with Dauth (Demo)</a>
+
+			<br /><br/><br />
+			instead of 
+			<br />
+			<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
 		  </center>
 		  <br /><br /> 
-	    <h5 class="card-title">Want to integrate Dauth on your website?</h5>
-	    <a href="/plugin">Getting started</a> is as easy as any other social login. 
+		  <h5> What next? </h5>
+		  <ul>
+		      <li><a href="/plugin">Integrate DAuth on your website</a></li>
+		      <li><a href="https://medium.com/madhavanmalolan/login-with-ethereum-e6dbd408d46c" target="_blank"> Read more about "Why Dauth?"</a></li>
+		      <li><a href="https://medium.com/madhavanmalolan/how-dauth-works-8572388efa51" target="_blank"> Learn about the technical details of Dauth </a></li>
+		  </ul>
 	  </div>
 	</div>
 	<a href="https://github.com/madhavanmalolan/dauth"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-118711630-1"></script>
+	<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+        gtag('config', 'UA-118711630-1');
+	</script>
+
     </body>
 
 
