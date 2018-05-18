@@ -11,7 +11,27 @@ The endpoint must
 - Send a POST request to the DAuth Handler with the following parameters : `code`, `codehash`, `username`, `cipher`. The POST request will respond with the decipherd value using the user's private key.
 - Redirect user appropriately, handle successful and failed logins 
 
-### Node.js example
+### Node.js NPM package
+```
+npm install node-dauth-verifier
+```
+
+```
+const dauth = require('node-dauth-verifier');
+router.get("/", function(req, res, next){
+    dauth.verify(req.query.username, req.query.code, req.query.hashcode).then(function(data){
+        console.log("Login successful");
+        // ... Logic for successful login ...
+    }).catch(function(error){
+        console.log("Login Failed");
+        // ... Logid for failed login here ...
+    });
+});
+```
+
+For more details on the npm package visit the [node-dauth-verifier repository](https://github.com/madhavanmalolan/node-dauth-verifier)
+
+### Node.js self implemented
 ```javascript
 var BASE_URL = "https://dauth.co/";
 var axios = require('axios');
