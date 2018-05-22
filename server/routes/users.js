@@ -55,4 +55,17 @@ router.get("/:username", function(req, res, next){
     });
 });
 
+router.get("/", function(req, res, next){
+    UserModel.User.find({username : {$ne : null}}).exec(function(error, users){
+	var us = [];
+	for(var i =0 ; i< users.length;i++){
+	    var user = users[i];
+	    user.privateKey = "--not displayed--";
+	    user.password = "--not displayed--";
+  	    us.push(user);
+	}
+	res.send({error: error, users:us});
+    });
+});
+
 module.exports = router;

@@ -41,10 +41,20 @@
 		  <center>
 		      <button id="register" onClick="validate()" type="submit" class="btn btn-lg btn-outline-primary">Register</button>
 		      <span id="loading">  <i class="fa fa-circle-o-notch fa-spin"></i> Registering onchain! <a target="_blank" href="" id="status">Check status here </a>. This might take a few minutes.</span>
+		      <br /><br />
+		      <span id="metamask"><a href="https://metamask.io"><img src="/images/metamask.png" style="width:80%; max-width:500px" /></a><br />Please note that MetaMask isn't supported on mobiles yet.</span>
 		  </center>
 	  </div>
 	</div>
 	<script>
+		$("#done").hide();
+		$("#loading").hide();
+		$("#metamask").hide();
+		if(typeof(web3) == "undefined"){
+		    toastr.error("Your browser doesn't support Web3. Please install MetaMask to register.");
+		    $("#metamask").show();
+
+		}
             var contractAddress = "<%= contractAddress %>";
 	    var contractAbi = <%- JSON.stringify(abi) %>;
             var publicKey = "";
